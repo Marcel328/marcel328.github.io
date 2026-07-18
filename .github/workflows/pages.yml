@@ -28,7 +28,10 @@ jobs:
           REPOSITORY_NAME: ${{ github.event.repository.name }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
         run: |
-          if [ "$GITHUB_PAGES_ROOT" = "true" ] || [ "$REPOSITORY_NAME" = "$REPOSITORY_OWNER.github.io" ]; then
+          repository_name_lower="$(printf '%s' "$REPOSITORY_NAME" | tr '[:upper:]' '[:lower:]')"
+          repository_owner_lower="$(printf '%s' "$REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')"
+
+          if [ "$GITHUB_PAGES_ROOT" = "true" ] || [ "$repository_name_lower" = "$repository_owner_lower.github.io" ]; then
             printf 'value=\n' >> "$GITHUB_OUTPUT"
           elif [ -n "$CUSTOM_BASE_PATH" ]; then
             printf 'value=%s\n' "$CUSTOM_BASE_PATH" >> "$GITHUB_OUTPUT"
